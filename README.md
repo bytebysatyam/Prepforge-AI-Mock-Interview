@@ -1,29 +1,132 @@
-# Create T3 App
+# Prepforge AI Mock Interview
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Prepforge is an AI-powered mock interview platform that helps users practice technical interviews with resume-based question generation, answer evaluation, and score tracking.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- Upload a resume in PDF format
+- Extract and store resume text
+- Generate personalized technical interview questions using AI
+- Practice through a timed mock interview flow
+- Evaluate answers with AI-generated score, feedback, and improvement suggestions
+- Track interview performance on a results page
+- Authentication-ready project structure with NextAuth
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Tech Stack
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- Next.js 15
+- React 19
+- TypeScript
+- Prisma
+- SQLite
+- tRPC
+- NextAuth
+- Gemini API
+- Groq API
+- Tailwind CSS
 
-## Learn More
+## Project Flow
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+1. Upload a PDF resume
+2. Parse and store the resume text
+3. Generate technical interview questions based on the resume
+4. Answer questions in the mock interview interface
+5. Evaluate responses using AI
+6. Review scores and feedback on the results page
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Folder Structure
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+```bash
+src/
+  app/
+    api/
+    interview/
+    results/
+    upload/
+  server/
+  trpc/
+prisma/
+public/
+```
 
-## How do I deploy this?
+## Getting Started
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/bytebysatyam/Prepforge-AI-Mock-Interview.git
+cd Prepforge-AI-Mock-Interview
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up environment variables
+
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+DATABASE_URL="file:./prisma/dev.db"
+GEMINI_API_KEY="your_gemini_api_key"
+GROQ_API_KEY="your_groq_api_key"
+NEXTAUTH_SECRET="your_nextauth_secret"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+## Database Setup
+
+Run Prisma migration:
+
+```bash
+npx prisma migrate dev
+```
+
+If needed, generate the Prisma client:
+
+```bash
+npx prisma generate
+```
+
+## Run the Project
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000` in your browser.
+
+## Available Scripts
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run typecheck
+npm run db:push
+npm run db:migrate
+npm run db:studio
+```
+
+## Notes
+
+- `generated/prisma/` is ignored and can be regenerated locally
+- `prisma/dev.db` is ignored and should not be committed
+- Valid API keys are required for Gemini and Groq-powered features
+
+## Future Improvements
+
+- Better interview analytics dashboard
+- Persistent interview history per user
+- Voice-based interview mode
+- Webcam-based answer recording
+- Improved mobile responsiveness
+- Production deployment support with a hosted database
+
+## Author
+
+Built by [Satyam](https://github.com/bytebysatyam)
