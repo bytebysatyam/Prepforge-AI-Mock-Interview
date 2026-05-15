@@ -18,7 +18,7 @@ Prepforge is an AI-powered mock interview platform that helps users practice tec
 - React 19
 - TypeScript
 - Prisma
-- SQLite
+- PostgreSQL
 - tRPC
 - NextAuth
 - Gemini API
@@ -71,11 +71,9 @@ Create a `.env` file in the project root.
 Example:
 
 ```env
-DATABASE_URL="file:./prisma/dev.db"
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/prepforge?schema=public"
 GEMINI_API_KEY="your_gemini_api_key"
 GROQ_API_KEY="your_groq_api_key"
-NEXTAUTH_SECRET="your_nextauth_secret"
-NEXTAUTH_URL="http://localhost:3000"
 ```
 
 ## Database Setup
@@ -83,7 +81,7 @@ NEXTAUTH_URL="http://localhost:3000"
 Run Prisma migration:
 
 ```bash
-npx prisma migrate dev
+npx prisma migrate deploy
 ```
 
 If needed, generate the Prisma client:
@@ -119,7 +117,7 @@ Suggested deployment flow:
 
 1. Create a hosted PostgreSQL database
 2. Add the production `DATABASE_URL`, `GEMINI_API_KEY`, and `GROQ_API_KEY` in your hosting dashboard
-3. Run your Prisma migration against the production database
+3. Run `npx prisma migrate deploy` against the production database
 4. Import the GitHub repository into Vercel and deploy
 
 ## Available Scripts
