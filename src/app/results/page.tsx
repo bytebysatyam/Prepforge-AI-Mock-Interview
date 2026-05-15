@@ -9,7 +9,7 @@ export default function ResultsPage() {
     const saved = localStorage.getItem("scores");
 
     if (saved) {
-      setScores(JSON.parse(saved));
+      setScores(JSON.parse(saved) as number[]);
     }
   }, []);
 

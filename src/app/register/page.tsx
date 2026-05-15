@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+type RegisterResponse = {
+  error?: string;
+};
+
 export default function RegisterPage() {
   const [form, setForm] = useState({
     name: "",
@@ -18,9 +22,9 @@ export default function RegisterPage() {
       body: JSON.stringify(form),
     });
 
-    const data = await res.json();
+    const data = (await res.json()) as RegisterResponse;
 
-    alert(data.error || "Registration Successful");
+    alert(data.error ?? "Registration Successful");
   };
 
   return (

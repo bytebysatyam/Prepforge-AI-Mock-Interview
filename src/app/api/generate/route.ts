@@ -4,14 +4,19 @@ import Groq from "groq-sdk";
 
 const prisma = new PrismaClient();
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
-
 export async function POST() {
   try {
+    const apiKey = process.env.GROQ_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "GROQ_API_KEY is not configured" },
+        { status: 500 },
+      );
+    }
+
     const resume = await prisma.resume.findFirst({
-      orderBy: { id: "desc" },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!resume) {
@@ -20,6 +25,8 @@ export async function POST() {
         { status: 404 }
       );
     }
+
+    const groq = new Groq({ apiKey });
 
     const completion = await groq.chat.completions.create({
       messages: [
@@ -36,7 +43,7 @@ export async function POST() {
       model: "llama-3.3-70b-versatile",
     });
 
-    const output = completion.choices[0]?.message?.content || "";
+    const output = completion.choices[0]?.message?.content ?? "";
 
     const questions = output
       .split("\n")
@@ -44,11 +51,15 @@ export async function POST() {
 
     return NextResponse.json({ questions });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
 
-    return NextResponse.json({
-      error: error.message
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : "Question generation failed",
+      },
+      { status: 500 },
+    );
   }
 }

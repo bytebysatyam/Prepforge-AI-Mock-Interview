@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+type LoginResponse = {
+  message?: string;
+  error?: string;
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,13 +25,13 @@ export default function LoginPage() {
       body: JSON.stringify(form),
     });
 
-    const data = await res.json();
+    const data = (await res.json()) as LoginResponse;
 
     if (data.message) {
       alert(data.message);
       router.push("/dashboard");
     } else {
-      alert(data.error);
+      alert(data.error ?? "Login failed");
     }
   };
 

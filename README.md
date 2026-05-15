@@ -100,6 +100,28 @@ npm run dev
 
 Open `http://localhost:3000` in your browser.
 
+## Deployment
+
+Recommended setup:
+
+- Host the app on Vercel
+- Use a hosted PostgreSQL database such as Neon, Supabase, or Prisma Postgres
+
+Required production environment variables:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/prepforge?schema=public"
+GEMINI_API_KEY="your_gemini_api_key"
+GROQ_API_KEY="your_groq_api_key"
+```
+
+Suggested deployment flow:
+
+1. Create a hosted PostgreSQL database
+2. Add the production `DATABASE_URL`, `GEMINI_API_KEY`, and `GROQ_API_KEY` in your hosting dashboard
+3. Run your Prisma migration against the production database
+4. Import the GitHub repository into Vercel and deploy
+
 ## Available Scripts
 
 ```bash

@@ -4,16 +4,21 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const prisma = new PrismaClient();
 
-const genAI = new GoogleGenerativeAI(
-  process.env.GEMINI_API_KEY!
-);
-
 export async function POST() {
   try {
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "GEMINI_API_KEY is not configured" },
+        { status: 500 },
+      );
+    }
+
     const resume = await prisma.resume.findFirst({
       orderBy: {
-  id: "desc"
-},
+        createdAt: "desc",
+      },
     });
 
     if (!resume) {
@@ -22,6 +27,8 @@ export async function POST() {
         { status: 404 }
       );
     }
+
+    const genAI = new GoogleGenerativeAI(apiKey);
 
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",

@@ -3,21 +3,43 @@
 import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 
+type GenerateQuestionsResponse = {
+  questions?: string[];
+};
+
 export default function MockInterview() {
   const [questions, setQuestions] = useState<string[]>([]);
   const [current, setCurrent] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
   const webcamRef = useRef<Webcam>(null);
 
+  const nextQuestion = () => {
+    setCurrent((prev) => {
+      if (prev < questions.length - 1) {
+        setTimeLeft(60);
+        return prev + 1;
+      }
+
+      return prev;
+    });
+  };
+
   useEffect(() => {
-    fetch("/api/generate", { method: "POST" })
-      .then((res) => res.json())
-      .then((data) => setQuestions(data.questions || []));
+    void fetch("/api/generate", { method: "POST" })
+      .then(async (res) => (await res.json()) as GenerateQuestionsResponse)
+      .then((data) => setQuestions(data.questions ?? []));
   }, []);
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      nextQuestion();
+      setCurrent((prev) => {
+        if (prev < questions.length - 1) {
+          setTimeLeft(60);
+          return prev + 1;
+        }
+
+        return prev;
+      });
       return;
     }
 
@@ -26,14 +48,7 @@ export default function MockInterview() {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timeLeft]);
-
-  const nextQuestion = () => {
-    if (current < questions.length - 1) {
-      setCurrent(current + 1);
-      setTimeLeft(60);
-    }
-  };
+  }, [questions.length, timeLeft]);
 
   const capture = () => {
     const imageSrc = webcamRef.current?.getScreenshot();

@@ -43,6 +43,8 @@ export default function InterviewPage() {
     }, 1000);
 
     return () => clearTimeout(timer);
+    // evaluateAnswer intentionally uses the latest render state for the active question/timer cycle.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current, evaluations, loadingEval, timeLeft]);
 
   const evaluateAnswer = async () => {
